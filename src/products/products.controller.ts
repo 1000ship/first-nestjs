@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { Product } from './product.model';
 import { ProductsService } from './products.service';
 
 // Controller 정의
@@ -15,7 +14,6 @@ import { ProductsService } from './products.service';
 // 이후 @Get, @Post, @Patch, @Delete 도 Sub route를 의미한다.
 @Controller('products')
 export class ProductsController {
-
   // 데이터 Fetch, Execute를 위한 API
   // private readonly productsService;
   // this.productsService = productsService
@@ -25,12 +23,12 @@ export class ProductsController {
   // Body : {title, description, price}
   // Create 역할
   @Post()
-  addProduct(
+  async addProduct(
     @Body('title') prodTitle: string,
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number,
-  ): {id: string} {
-    const generatedID = this.productsService.insertProduct(
+  ) {
+    const generatedID = await this.productsService.insertProduct(
       prodTitle,
       prodDesc,
       prodPrice,
@@ -38,47 +36,40 @@ export class ProductsController {
     return { id: generatedID };
   }
 
-
   // Method: Get
   // Read 역할 (복수)
   @Get()
-  getAllProducts(): Product[] {
-    return this.productsService.getProducts();
+  async getAllProducts() {
+    return await this.productsService.getProducts();
   }
-
 
   // Method: Get
   // Param: id
   // Read 역할 (단수)
   @Get(':id')
-  getProduct(@Param('id') prodId: string): Product {
-    return this.productsService.getSingleProduct(prodId);
+  async getProduct(@Param('id') prodId: string) {
+    return await this.productsService.getSingleProduct(prodId);
   }
-
-
 
   // Method: Patch
   // Param: id
   // Body: {title?, description?, price?}
   // Update 역할
   @Patch(':id')
-  updateProduct(
+  async updateProduct(
     @Param('id') prodId: string,
     @Body('title') prodTitle: string,
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number,
-  ): null {
-    this.productsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice);
-    return null;
+  ) {
+    await this.productsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice);
   }
-
 
   // Method: Delete
   // Param: id
   // Delete 역할
-  @Delete(":id")
-  removeProduct(@Param('id') prodId: string): null {
-    this.productsService.deleteProduct(prodId)
-    return null
+  @Delete(':id')
+  async removeProduct(@Param('id') prodId: string) {
+    await this.productsService.deleteProduct(prodId);
   }
 }

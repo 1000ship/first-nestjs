@@ -14,3 +14,14 @@ nest g resource [name]
 
   ( WebScoket는 Controller 대신 Gateway + Service 로 사용하는데 굉장히 유용할듯 싶다. )
 
+- Mongoose와 함께 활용 (https://cloud.mongodb.com)
+
+```
+// .env
+MONGO_USERNAME=[유저이름]
+MONGO_PASSWORD=[비밀번호]
+MONGO_DB_NAME=[DB이름]
+```
+
+​	위와 같은 설정 필요
+
